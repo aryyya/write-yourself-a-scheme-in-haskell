@@ -7,3 +7,7 @@ A Scheme interpreter implemented in Haskell.
 ```bash
 make && ./wyasih
 ```
+
+## Dependencies
+
+- parsec

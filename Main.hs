@@ -1,18 +1,20 @@
 module Main where
 
-import System.Environment
+import System.IO (hFlush, stdout)
 
 main :: IO ()
 main = do
-  args <- getArgs
-  let xAndY = getXAndY args
-  let sum = sumXAndY xAndY
-  putStrLn $ show $ sum
+  putStrFlush "Enter your name: "
+  name <- getLine
+  putStrLn $ "Hello, " ++ name ++ "!"
 
-getXAndY :: [String] -> (Integer, Integer)
-getXAndY args = (read $ args !! 0, read $ args !! 1)
+putFlush :: (String -> IO ()) -> String -> IO ()
+putFlush putFn string = do
+  putFn string
+  hFlush stdout
 
-sumXAndY :: (Integer, Integer) -> Integer
-sumXAndY xAndY = x + y
-  where x = fst xAndY
-        y = snd xAndY
+putStrLnFlush :: String -> IO ()
+putStrLnFlush = putFlush putStrLn
+
+putStrFlush :: String -> IO ()
+putStrFlush = putFlush putStr

@@ -17,9 +17,6 @@ readExpr input = case parse parseExpr "lisp" input of
   Left err -> "No match: " ++ show err
   Right val -> "Found value"
 
-spaces :: Parser ()
-spaces = skipMany1 space
-
 data LispVal =
     Atom String
   | List [LispVal]
@@ -27,6 +24,12 @@ data LispVal =
   | Number Integer
   | String String
   | Bool Bool
+
+parseExpr :: Parser LispVal
+parseExpr =
+      parseAtom
+  <|> parseString
+  <|> parseNumber
 
 parseString :: Parser LispVal
 parseString = do
@@ -47,9 +50,3 @@ parseAtom = do
 
 parseNumber :: Parser LispVal
 parseNumber = liftM (Number . read) $ many1 digit
-
-parseExpr :: Parser LispVal
-parseExpr =
-      parseAtom
-  <|> parseString
-  <|> parseNumber
